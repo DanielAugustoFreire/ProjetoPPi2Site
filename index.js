@@ -79,9 +79,9 @@ function listar(req,res){
             <tr>
                 <th>Email</th>
                 <th>Nome Completo</th>
-                <th>check1</th>
-                <th>check2</th>
-                <th>check3</th>
+                <th>Destro</th>
+                <th>Canhoto</th>
+                <th>Ambidestro</th>
             </tr>
         </thead>
         <tbody> `;
@@ -119,12 +119,40 @@ app.get(`/`, (req,res) => {
     app.use(express.static(path.join(process.cwd(),`src`)));
 
     res.send(`
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .instructions {
+        text-align: center;
+        margin-top: 20px;
+        color: #555;
+    }
+</style>
     <body>
 
     <h1>Responda o seguinte Form:<br><a href="/cadastro.html">Formulário</a></h1>
     <h1 class="instructions">Para Listar, escreva localhost:3000/listar</h1>
 
-</body>
+    </body>
 
     `);
 });
