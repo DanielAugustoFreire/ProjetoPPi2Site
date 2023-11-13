@@ -125,6 +125,11 @@ app.get(`/`, (req,res) => {
         background-color: #f0f0f0;
         margin: 0;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
     }
 
     h1 {
@@ -146,11 +151,35 @@ app.get(`/`, (req,res) => {
         margin-top: 20px;
         color: #555;
     }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
 </style>
     <body>
 
     <h1>Responda o seguinte Form:<br><a href="/cadastro.html">Formulário</a></h1>
-    <h1 class="instructions">Para Listar, escreva localhost:3000/listar</h1>
+    <h1 class="instructions">Para Listar, clique no botao abaixo</h1>
+    <button onclick="redirecionarParaListar()">Listar</button>
+    <script>
+        function redirecionarParaListar() {
+            window.location.href = '/listar';
+        }
+    </script>
 
     </body>
 
