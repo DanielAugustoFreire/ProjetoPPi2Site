@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body style="display: flex;
+            padding: 10%;
+            justify-content: center;
+            "
+>
+
+    <div class="container bg-secondary p-md-5">    
+        <form action="/cadastrarusuario" method="GET">
+        <div class="form-group">
+          <label for="emailentrada">Endereço de email</label>
+          <input type="email" class="form-control" id="emailentrada" name="emailentrada" aria-describedby="emailHelp"required>
+          <small id="emailHelp" class="form-text text-muted">Nunca vamos compartilhar seu email, com ninguém.</small>
+        </div>
+        <div class="form-group">
+          <label for="senha">Nome Completo</label>
+          <input type="text" class="form-control" id="full_name" name="full_name" required>
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" name="check1" value="1" id="Check1">
+          <label class="form-check-label" for="Check1">Clique em mim</label><br>
+          <input type="checkbox" class="form-check-input" name="check2" value="1" id="Check2">
+          <label class="form-check-label" for="Check2">Clique em mim</label><br>
+          <input type="checkbox" class="form-check-input" name="check3" value="1" id="Check3">
+          <label class="form-check-label" for="Check3">Clique em mim</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+</div>
+
+    <script>
+
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
