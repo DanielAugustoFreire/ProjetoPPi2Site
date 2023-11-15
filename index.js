@@ -170,7 +170,7 @@ app.get(`/`, (req,res) => {
         background-color: #0056b3;
     }
 </style>
-    <body>
+    <body>      
 
     <h1>Responda o seguinte Form:<br><a href="/cadastro.html">Formulário</a></h1>
     <h1 class="instructions">Para Listar, clique no botao abaixo</h1>
