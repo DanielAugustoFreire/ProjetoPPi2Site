@@ -13,11 +13,10 @@
 >
 
     <div class="container bg-secondary p-md-5">    
-        <form action="/cadastrarusuario" method="GET">
+        <form action="/cadastrarusuario" method="POST" novalidate>
         <div class="form-group">
           <label for="emailentrada">Endereço de email</label>
           <input type="email" class="form-control" id="emailentrada" name="emailentrada" aria-describedby="emailHelp"required>
-          <small id="emailHelp" class="form-text text-muted">Nunca vamos compartilhar seu email, com ninguém.</small>
         </div>
         <div class="form-group">
           <label for="senha">Nome Completo</label>
@@ -31,7 +30,7 @@
           <input type="checkbox" class="form-check-input" name="check3" value="1" id="Check3">
           <label class="form-check-label" for="Check3">Ambidestro</label>
         </div>
-        <button type="submit" class="btn btn-primary">Entrar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
 </div>
 

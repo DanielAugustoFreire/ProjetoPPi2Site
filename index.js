@@ -10,22 +10,110 @@ var lista_usuario = [];
 
 function processarCadastro(req, res)
 {
-    const usuario = {
-        email: req.query.emailentrada,
-        nome: req.query.full_name,
-        check1: req.query.check1,
-        check2: req.query.check2,
-        check3: req.query.check3
+    const dados = req.body;
+
+    const checker = req.body.check1 || req.body.check2 || req.body.check3;
+
+
+    if(!(req.body.full_name && req.body.emailentrada && checker))
+    {
+        var resposta = `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        </head>
+        <body style="display: flex;
+                    padding: 10%;
+                    justify-content: center;
+                    "
+        >
+        
+            <div class="container bg-secondary p-md-5">    
+                <form action="/cadastrarusuario" method="POST" novalidate>
+                <div class="form-group">
+                  <label for="emailentrada">Endereço de email</label>
+                  <input type="email" class="form-control" id="emailentrada" name="emailentrada" value="${req.body.emailentrada}" aria-describedby="emailHelp"required>`;
+
+        if(!req.body.emailentrada)
+        {
+            resposta +=`<p style="color: red;">Por favor, preencha este campo.</p>`;
+        }
+
+        resposta += `        </div>
+        <div class="form-group">
+          <label for="senha">Nome Completo</label>
+          <input type="text" class="form-control" id="full_name" value="${req.body.full_name}" name="full_name" required>`;
+     
+          if(!req.body.full_name)
+        {
+            resposta +=`<p style="color: red;">Por favor, preencha este campo.</p>`;
+        }
+     
+        resposta += `        </div>
+        <div class="form-group form-check">`
+        if(req.body.check1){
+            resposta += `<input type="checkbox" class="form-check-input" name="check1" value="1" id="Check1" checked>
+            <label class="form-check-label" for="Check1">Destro</label><br>`
+        }
+        else{
+            resposta += `<input type="checkbox" class="form-check-input" name="check1" value="1" id="Check1">
+            <label class="form-check-label" for="Check1">Destro</label><br>`
+        }
+        if(req.body.check2){
+            resposta +=`<input type="checkbox" class="form-check-input" name="check2" value="1" id="Check2" checked>
+            <label class="form-check-label" for="Check2">Canhoto</label><br>`
+        }
+        else{
+            resposta +=         `<input type="checkbox" class="form-check-input" name="check2" value="1" id="Check2">
+            <label class="form-check-label" for="Check2">Canhoto</label><br>`
+        }
+        if(req.body.check3){
+            resposta += 
+            `<input type="checkbox" class="form-check-input" name="check3" value="1" id="Check3" checked>
+            <label class="form-check-label" for="Check3">Ambidestro</label>`
+        }
+        else{
+            resposta += 
+            `<input type="checkbox" class="form-check-input" name="check3" value="1" id="Check3">
+            <label class="form-check-label" for="Check3">Ambidestro</label>`
+        }
+        if(!checker)
+        {
+            resposta +=`<p style="color: red;">Por favor, preencha pelo menos um checker.</p>`;
+        }
+        resposta += `</div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+
+                <script>
+
+                </script>
+
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+            </body>
+            </html>`;
+
+        res.end(resposta);
+    }  
+    else
+    {
+        const usuario = {
+            email: req.body.emailentrada,
+            nome: req.body.full_name,
+            check1: req.body.check1 ?? 0,
+            check2: req.body.check2 ?? 0,
+            check3: req.body.check3 ?? 0
+        }
+
+        lista_usuario.push(usuario);
+
+        res.redirect(`/listar`);
     }
-
-    if(usuario.check1 != 1) usuario.check1 = 0;
-    if(usuario.check2 != 1) usuario.check2 = 0;
-    if(usuario.check3 != 1) usuario.check3 = 0;
-
-    lista_usuario.push(usuario);
-
-    res.redirect(`/listar`);
-
+    
 };
 
 function listar(req,res){
@@ -110,7 +198,9 @@ function listar(req,res){
     res.end(conteudo);
 };
 
-app.get(`/cadastrarusuario`, processarCadastro);
+app.use(express.urlencoded({ extended: true }));
+
+app.post(`/cadastrarusuario`, processarCadastro)
 
 
 app.get(`/listar`, listar);
