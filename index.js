@@ -1,11 +1,19 @@
 import express from 'express';
 import path from 'path';
+import cookieParser from 'cookie-parser';
+
+
+
+//-Exibir Data e Hora do Ultimo Acesso -Cookies
+
+//-Autenticar o usuario para controlar o 
+//acesso aos recursos da aplicacao  -Sessao/Login
 
 const PORTA = 3000;
 const HOST = '0.0.0.0';
 
 const app = express();
-
+app.use(cookieParser());
 var lista_usuario = [];
 
 function processarCadastro(req, res)
@@ -206,6 +214,14 @@ app.post(`/cadastrarusuario`, processarCadastro)
 app.get(`/listar`, listar);
 
 app.get(`/`, (req,res) => {
+
+    const dataUltimoAcesso = req.cookies.DataUltimoAcesso || "Nunca acessado anteriormente";
+    const data = new Date();
+    res.cookie("DataUltimoAcesso", data.toLocaleString(), {
+        maxAge: 1000 * 60 * 60 * 24 * 30,
+        httpOnly: true
+    })
+
     app.use(express.static(path.join(process.cwd(),`src`)));
 
     res.send(`
@@ -265,6 +281,7 @@ app.get(`/`, (req,res) => {
     <h1>Responda o seguinte Form:<br><a href="/cadastro.html">Formulário</a></h1>
     <h1 class="instructions">Para Listar, clique no botao abaixo</h1>
     <button onclick="redirecionarParaListar()">Listar</button>
+    <h2>Seu Ultimo acesso foi em ${dataUltimoAcesso}</h2>
     <script>
         function redirecionarParaListar() {
             window.location.href = '/listar';
