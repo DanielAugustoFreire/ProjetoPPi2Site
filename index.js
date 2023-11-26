@@ -16,7 +16,7 @@ const app = express();
 app.use(cookieParser());
 var lista_usuario = [];
 
-function processarCadastro(req, res)
+function    processarCadastro(req, res)
 {
     const dados = req.body;
 
