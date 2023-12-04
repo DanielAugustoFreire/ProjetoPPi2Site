@@ -3,12 +3,6 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
-
-//-Exibir Data e Hora do Ultimo Acesso -Cookies
-
-//-Autenticar o usuario para controlar o 
-//acesso aos recursos da aplicacao  -Sessao/Login
-
 const PORTA = 3000;
 const HOST = '0.0.0.0';
 
@@ -234,10 +228,10 @@ app.get(`/listar`, listar);
 app.use(express.static(path.join(process.cwd(),`src`)))
 
 app.post('/login', (req, res)=>{
-    const user = requisicao.body.usuario;
-    const pass = requisicao.body.senha;
+    const user = req.body.usuario;
+    const pass = req.body.senha;
     if (user && pass && (user === 'dan') && (pass === '123')){
-        requisicao.session.usuarioAutenticado = true;
+        req.session.usuarioAutenticado = true;
         res.redirect('/');
     }
     else{
