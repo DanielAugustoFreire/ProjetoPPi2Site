@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-
+import session from 'express-session';
 
 
 //-Exibir Data e Hora do Ultimo Acesso -Cookies
@@ -15,6 +15,24 @@ const HOST = '0.0.0.0';
 const app = express();
 app.use(cookieParser());
 var lista_usuario = [];
+
+function autenticar(requisicao, resposta, next){
+    if (requisicao.session.usuarioAutenticado){
+        next();
+    }
+    else{
+        resposta.redirect("/login.html");
+    }
+}
+
+app.use(session({
+    secret:"secreta",
+    resave: true, 
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 15 
+    }
+}));
 
 function    processarCadastro(req, res)
 {
@@ -213,7 +231,70 @@ app.post(`/cadastrarusuario`, processarCadastro)
 
 app.get(`/listar`, listar);
 
-app.get(`/`, (req,res) => {
+app.use(express.static(path.join(process.cwd(),`src`)))
+
+app.post('/login', (req, res)=>{
+    const user = requisicao.body.usuario;
+    const pass = requisicao.body.senha;
+    if (user && pass && (user === 'dan') && (pass === '123')){
+        requisicao.session.usuarioAutenticado = true;
+        res.redirect('/');
+    }
+    else{
+        res.end(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Falha na autenticação</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f8f9fa;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                }
+        
+                h3 {
+                    color: #dc3545;
+                }
+        
+                a {
+                    color: #007bff;
+                    text-decoration: none;
+                }
+        
+                a:hover {
+                    text-decoration: underline;
+                }
+        
+                .container {
+                    background-color: #fff;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h3>Usuário ou senha inválidos!</h3>
+                <a href="/login.html">Voltar ao login</a>
+            </div>
+        </body>
+        </html>
+        `);
+    }
+});
+
+app.get(`/`, autenticar, (req,res) => {
 
     const dataUltimoAcesso = req.cookies.DataUltimoAcesso || "Nunca acessado anteriormente";
     const data = new Date();
@@ -281,7 +362,7 @@ app.get(`/`, (req,res) => {
     <h1>Responda o seguinte Form:<br><a href="/cadastro.html">Formulário</a></h1>
     <h1 class="instructions">Para Listar, clique no botao abaixo</h1>
     <button onclick="redirecionarParaListar()">Listar</button>
-    <h2>Seu Ultimo acesso foi em ${dataUltimoAcesso}</h2>
+    <h2>Ultimo acesso de dan em ${dataUltimoAcesso}</h2>
     <script>
         function redirecionarParaListar() {
             window.location.href = '/listar';
